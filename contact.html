@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Nathan Qiao</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/contact.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <h2>Nathan Qiao</h2>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="booking.html">Book Now</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="contact-hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Get in Touch</h1>
+                    <p class="hero-subtitle">Have questions about lessons or ready to start your journey? I'd love to hear from you!</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-layout">
+                    <div class="contact-form-container">
+                        <div class="form-header">
+                            <h2>Send Me a Message</h2>
+                            <p>Fill out the form below and I'll get back to you as soon as possible.</p>
+                        </div>
+                        <form class="contact-form" id="contactForm" action="https://formspree.io/f/mdkzldpa" method="POST">
+                            <div class="form-group">
+                                <label for="name">Full Name *</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="service">Service Interest *</label>
+                                <select id="service" name="service" required>
+                                    <option value="">Select a service</option>
+                                    <option value="swimming">Swimming Lessons</option>
+                                    <option value="tutoring">Academic Tutoring</option>
+                                    <option value="both">Both Services</option>
+                                    <option value="other">Other/General Inquiry</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject *</label>
+                                <input type="text" id="subject" name="subject" required placeholder="What's this about?">
+                            </div>
+                            <!-- Honeypot field to catch bots -->
+                            <div class="honeypot" style="position: absolute; left: -9999px; top: -9999px;">
+                                <label for="website">Leave this field empty</label>
+                                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message *</label>
+                                <textarea id="message" name="message" rows="6" required placeholder="Tell me about your goals, experience level, schedule preferences, or any questions you have..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </form>
+                        <div id="formMessages" class="form-messages">
+                            <!-- Success or error messages will be displayed here -->
+                        </div>
+                    </div>
+
+                    <div class="contact-info">
+                        <div class="contact-card">
+                            <h3>Quick Contact</h3>
+                            <div class="contact-methods">
+                                <div class="contact-method">
+                                    <div class="method-icon">📧</div>
+                                    <div class="method-details">
+                                        <h4>Email</h4>
+                                        <p>1qiaonat@gmail.com</p>
+                                        <small>I typically respond within 24 hours</small>
+                                    </div>
+                                </div>
+                                <div class="contact-method">
+                                    <div class="method-icon">📱</div>
+                                    <div class="method-details">
+                                        <h4>Phone/Text</h4>
+                                        <p>(289)-828-5004</p>
+                                        <small>Available 9 AM - 11 PM daily</small>
+                                    </div>
+                                </div>
+                                <div class="contact-method">
+                                    <div class="method-icon">📍</div>
+                                    <div class="method-details">
+                                        <h4>Location</h4>
+                                        <p>Burlington, Ontario</p>
+                                        <small>Serving Burlington since 2023</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="availability-card">
+                            <h3>Availability</h3>
+                            <div class="schedule">
+                                <div class="schedule-item">
+                                    <span class="day">Monday - Friday</span>
+                                    <span class="time">10:00 PM - 9:00 PM</span>
+                                </div>
+                                <div class="schedule-item">
+                                    <span class="day">Saturday</span>
+                                    <span class="time">9:00 AM - 8:00 PM</span>
+                                </div>
+                                <div class="schedule-item">
+                                    <span class="day">Sunday</span>
+                                    <span class="time">10:00 AM - 7:00 PM</span>
+                                </div>
+                            </div>
+                            <p class="schedule-note">Schedule may vary. Contact me for current availability.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-contact">
+            <div class="container">
+                <h2>Frequently Asked Questions</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h3>How quickly can I start lessons?</h3>
+                        <p>Usually within a week! I'll work with your schedule to find the best time for regular lessons.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Do you offer trial lessons?</h3>
+                        <p>Yes! I offer a discounted first lesson so we can meet, assess your needs, and see if we're a good fit.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>What should I bring to swimming lessons?</h3>
+                        <p>Just bring swimwear, goggles, and a towel. I can recommend specific equipment based on your goals.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Can you help with specific subjects?</h3>
+                        <p>I specialize in mathematics and sciences. Contact me to discuss your specific course or topic needs.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>What are your rates?</h3>
+                        <p>I strive to keep my lessons affordable while maintaining high quality instruction. You can learn more about pricing and packages on the booking page.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Do you offer online tutoring?</h3>
+                        <p>Yes! I provide both in-person and online tutoring sessions to accommodate different schedules and preferences.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="final-cta">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Ready to Get Started?</h2>
+                    <p>Don't wait to begin your journey toward your goals. Reach out today!</p>
+                    <div class="cta-buttons">
+                        <a href="booking.html" class="btn btn-primary">Book a Lesson</a>
+                        <a href="about.html" class="btn btn-secondary">Learn About Me</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Nathan Qiao. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+    <script src="js/contact.js"></script>
+</body>
+</html>
+
