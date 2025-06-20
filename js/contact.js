@@ -1,28 +1,62 @@
 document.addEventListener('DOMContentLoaded', function() {
     const contactForm = document.getElementById('contactForm');
-    const formGroups = document.querySelectorAll('.form-group');
+    const submitBtn = document.getElementById('submitBtn');
+    let lastSubmissionTime = 0;
+    const RATE_LIMIT_DELAY = 10000; // 10 seconds between submissions
 
-    // Form submission handling with AJAX
+    // Set form timestamp for rate limiting
+    document.getElementById('formTimestamp').value = Date.now();
+
+    // Security: Input sanitization patterns
+    const securityPatterns = {
+        xss: /<script|javascript:|data:text\/html|vbscript:|onload=|onerror=/i,
+        sql: /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|UNION|ALTER|CREATE)\b)|(['";])/i,
+        suspicious: /(eval\(|setTimeout\(|setInterval\(|Function\(|innerHTML|outerHTML)/i
+    };
+
+    // Enhanced bot detection
+    let mouseMovements = 0;
+    let keystrokes = 0;
+    let focusEvents = 0;
+
+    // Track human-like interactions
+    document.addEventListener('mousemove', () => mouseMovements++);
+    document.addEventListener('keydown', () => keystrokes++);
+    contactForm.addEventListener('focusin', () => focusEvents++);
+
+    // Form submission handling with enhanced security
     contactForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
         
         const formData = new FormData(contactForm);
         const data = Object.fromEntries(formData);
         
-        // Check honeypot field first (bot detection)
-        if (data.website && data.website.trim() !== '') {
-            console.log('Bot detected - honeypot field filled');
+        // Rate limiting check
+        const currentTime = Date.now();
+        if (currentTime - lastSubmissionTime < RATE_LIMIT_DELAY) {
+            showErrorMessage('Please wait before submitting another message.');
+            return;
+        }
+
+        // Enhanced bot detection
+        if (!performBotDetection(data)) {
+            console.log('Bot detected');
             showErrorMessage('Submission failed. Please try again.');
             return;
         }
-        
-        // Basic validation
+
+        // Security validation
+        if (!performSecurityValidation(data)) {
+            showErrorMessage('Invalid input detected. Please check your message and try again.');
+            return;
+        }
+
+        // Form validation
         if (!validateForm(data)) {
             return;
         }
-        
+
         // Show loading state
-        const submitBtn = contactForm.querySelector('.btn-primary');
         const originalText = submitBtn.textContent;
         submitBtn.textContent = 'Sending...';
         submitBtn.disabled = true;
@@ -37,8 +71,13 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => {
             if (response.ok) {
+                lastSubmissionTime = currentTime;
                 showSuccessMessage();
                 contactForm.reset();
+                // Reset security counters
+                mouseMovements = 0;
+                keystrokes = 0;
+                focusEvents = 0;
             } else {
                 response.json().then(data => {
                     if (data.errors) {
@@ -54,9 +93,140 @@ document.addEventListener('DOMContentLoaded', function() {
             showErrorMessage('There was a problem sending your message. Please try again or contact me directly.');
         })
         .finally(() => {
-            // Reset button state
             submitBtn.textContent = originalText;
             submitBtn.disabled = false;
+        });
+    });
+
+    // Enhanced bot detection
+    function performBotDetection(data) {
+        // Check honeypot fields
+        if ((data.website && data.website.trim() !== '') || 
+            (data.url && data.url.trim() !== '')) {
+            return false;
+        }
+
+        // Check for human-like interaction
+        if (mouseMovements < 5 && keystrokes < 10 && focusEvents < 2) {
+            return false;
+        }
+
+        // Check form fill time (too fast = bot)
+        const formStartTime = parseInt(data._timestamp);
+        const fillTime = Date.now() - formStartTime;
+        if (fillTime < 5000) { // Less than 5 seconds
+            return false;
+        }
+
+        return true;
+    }
+
+    // Security validation function
+    function performSecurityValidation(data) {
+        const fieldsToCheck = ['name', 'email', 'subject', 'message'];
+        
+        for (const field of fieldsToCheck) {
+            const value = data[field] || '';
+            
+            // Check for XSS attempts
+            if (securityPatterns.xss.test(value)) {
+                console.warn('XSS attempt detected in field:', field);
+                return false;
+            }
+            
+            // Check for SQL injection attempts
+            if (securityPatterns.sql.test(value)) {
+                console.warn('SQL injection attempt detected in field:', field);
+                return false;
+            }
+            
+            // Check for suspicious content
+            if (securityPatterns.suspicious.test(value)) {
+                console.warn('Suspicious content detected in field:', field);
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
+    // Enhanced input sanitization
+    function sanitizeInput(input) {
+        return input
+            .replace(/[<>]/g, '') // Remove angle brackets
+            .replace(/javascript:/gi, '') // Remove javascript: protocol
+            .replace(/data:text\/html/gi, '') // Remove data:text/html
+            .trim();
+    }
+
+    // Form validation with enhanced security
+    function validateForm(data) {
+        let isValid = true;
+        const requiredFields = ['name', 'email', 'service', 'subject', 'message'];
+        
+        requiredFields.forEach(field => {
+            const input = document.querySelector(`[name="${field}"]`);
+            const formGroup = input.closest('.form-group');
+            let value = data[field] || '';
+            
+            // Sanitize input
+            value = sanitizeInput(value);
+            input.value = value;
+            
+            if (!value || value.trim() === '') {
+                showError(formGroup, `${field.charAt(0).toUpperCase() + field.slice(1)} is required`);
+                isValid = false;
+            } else {
+                clearError(formGroup);
+            }
+        });
+        
+        // Enhanced email validation
+        if (data.email && !isValidEmail(data.email)) {
+            const emailGroup = document.querySelector('[name="email"]').closest('.form-group');
+            showError(emailGroup, 'Please enter a valid email address');
+            isValid = false;
+        }
+
+        // Message length validation
+        if (data.message && data.message.length > 2000) {
+            const messageGroup = document.querySelector('[name="message"]').closest('.form-group');
+            showError(messageGroup, 'Message is too long (maximum 2000 characters)');
+            isValid = false;
+        }
+        
+        return isValid;
+    }
+
+    // Enhanced email validation
+    function isValidEmail(email) {
+        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+        const suspiciousPatterns = /@(temp|fake|test|spam|bot)\./i;
+        
+        return emailRegex.test(email) && !suspiciousPatterns.test(email);
+    }
+
+    // Real-time input validation and sanitization
+    const inputs = document.querySelectorAll('input[type="text"], input[type="email"], textarea');
+    inputs.forEach(input => {
+        input.addEventListener('input', function() {
+            // Prevent common XSS patterns in real-time
+            let value = this.value;
+            if (securityPatterns.xss.test(value)) {
+                this.value = value.replace(securityPatterns.xss, '');
+                showError(this.closest('.form-group'), 'Invalid characters removed');
+            }
+        });
+
+        input.addEventListener('paste', function(e) {
+            // Check pasted content for security issues
+            setTimeout(() => {
+                let value = this.value;
+                if (securityPatterns.xss.test(value) || securityPatterns.suspicious.test(value)) {
+                    this.value = sanitizeInput(value);
+                    showError(this.closest('.form-group'), 'Potentially unsafe content was sanitized');
+                }
+            }, 10);
         });
     });
 

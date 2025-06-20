@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact - Nathan Qiao</title>
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://formspree.io; style-src 'self' 'unsafe-inline'; connect-src 'self' https://formspree.io; img-src 'self' data:;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/contact.css">
 </head>
@@ -43,18 +50,21 @@
                             <h2>Send Me a Message</h2>
                             <p>Fill out the form below and I'll get back to you as soon as possible.</p>
                         </div>
-                        <form class="contact-form" id="contactForm" action="https://formspree.io/f/mdkzldpa" method="POST">
+                        <form class="contact-form" id="contactForm" action="https://formspree.io/f/mdkzldpa" method="POST" novalidate>
+                            <!-- CSRF Protection Token (if you implement server-side processing later) -->
+                            <input type="hidden" name="_token" id="csrfToken" value="">
+                            
                             <div class="form-group">
                                 <label for="name">Full Name *</label>
-                                <input type="text" id="name" name="name" required>
+                                <input type="text" id="name" name="name" required maxlength="100" autocomplete="name" spellcheck="false">
                             </div>
                             <div class="form-group">
                                 <label for="email">Email Address *</label>
-                                <input type="email" id="email" name="email" required>
+                                <input type="email" id="email" name="email" required maxlength="254" autocomplete="email" spellcheck="false">
                             </div>
                             <div class="form-group">
                                 <label for="phone">Phone Number</label>
-                                <input type="tel" id="phone" name="phone">
+                                <input type="tel" id="phone" name="phone" maxlength="20" autocomplete="tel" spellcheck="false">
                             </div>
                             <div class="form-group">
                                 <label for="service">Service Interest *</label>
@@ -68,19 +78,26 @@
                             </div>
                             <div class="form-group">
                                 <label for="subject">Subject *</label>
-                                <input type="text" id="subject" name="subject" required placeholder="What's this about?">
+                                <input type="text" id="subject" name="subject" required maxlength="200" placeholder="What's this about?" spellcheck="false">
                             </div>
-                            <!-- Honeypot field to catch bots -->
+                            <!-- Enhanced Honeypot fields -->
                             <div class="honeypot" style="position: absolute; left: -9999px; top: -9999px;">
                                 <label for="website">Leave this field empty</label>
                                 <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
                             </div>
+                            <div class="honeypot" style="position: absolute; left: -9999px; top: -9999px;">
+                                <label for="url">Website</label>
+                                <input type="url" id="url" name="url" tabindex="-1" autocomplete="off">
+                            </div>
                             <div class="form-group">
                                 <label for="message">Message *</label>
-                                <textarea id="message" name="message" rows="6" required placeholder="Tell me about your goals, experience level, schedule preferences, or any questions you have..."></textarea>
+                                <textarea id="message" name="message" rows="6" required maxlength="2000" placeholder="Tell me about your goals, experience level, schedule preferences, or any questions you have..." spellcheck="true"></textarea>
                             </div>
                             
-                            <button type="submit" class="btn btn-primary">Send Message</button>
+                            <!-- Rate limiting indicator -->
+                            <input type="hidden" name="_timestamp" id="formTimestamp" value="">
+                            
+                            <button type="submit" class="btn btn-primary" id="submitBtn">Send Message</button>
                         </form>
                         <div id="formMessages" class="form-messages">
                             <!-- Success or error messages will be displayed here -->
