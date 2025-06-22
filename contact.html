@@ -13,6 +13,9 @@
     
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/contact.css">
+    <script src="js/security-core.js"></script>
+    <script src="js/input-validator.js"></script>
+    <script src="js/obfuscation.js"></script>
 </head>
 <body>
     <header>
@@ -50,7 +53,7 @@
                             <h2>Send Me a Message</h2>
                             <p>Fill out the form below and I'll get back to you as soon as possible.</p>
                         </div>
-                        <form class="contact-form" id="contactForm" action="https://formspree.io/f/mdkzldpa" method="POST" novalidate>
+                        <form class="contact-form" id="contactForm" data-action="aHR0cHM6Ly9mb3Jtc3ByZWUuaW8vZi9tZGt6bGRwYQ==" method="POST" novalidate>
                             <!-- CSRF Protection Token (if you implement server-side processing later) -->
                             <input type="hidden" name="_token" id="csrfToken" value="">
                             
@@ -112,7 +115,7 @@
                                     <div class="method-icon">📧</div>
                                     <div class="method-details">
                                         <h4>Email</h4>
-                                        <p>1qiaonat@gmail.com</p>
+                                        <p id="emailContact">Loading...</p>
                                         <small>I typically respond within 24 hours</small>
                                     </div>
                                 </div>
@@ -120,7 +123,7 @@
                                     <div class="method-icon">📱</div>
                                     <div class="method-details">
                                         <h4>Phone/Text</h4>
-                                        <p>(289)-828-5004</p>
+                                        <p id="phoneContact">Loading...</p>
                                         <small>Available 9 AM - 11 PM daily</small>
                                     </div>
                                 </div>
@@ -211,6 +214,20 @@
     </footer>
     <script src="js/main.js"></script>
     <script src="js/contact.js"></script>
+    <script>
+        // Obfuscated contact information
+        document.addEventListener('DOMContentLoaded', function() {
+            // Base64 encoded email and phone
+            const email = 'MXFpYW9uYXRAZ21haWwuY29t'; // 1qiaonat@gmail.com
+            const phone = 'KDI4OSktODI4LTUwMDQ='; // (289)-828-5004
+            
+            document.getElementById('emailContact').textContent = atob(email);
+            document.getElementById('phoneContact').textContent = atob(phone);
+            
+            // Set form action
+            document.getElementById('contactForm').action = atob(document.getElementById('contactForm').getAttribute('data-action'));
+        });
+    </script>
 </body>
 </html>
 

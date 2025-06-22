@@ -402,9 +402,36 @@
     background: transparent !important;
 }
 
+/* Disable text selection for sensitive areas */
+.contact-form, .contact-info {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Re-enable selection for input fields */
+.contact-form input, .contact-form textarea, .contact-form select {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
 @keyframes slideInDown {
     from {
-        transform: translateY(-20px);
+        transform: translateY(-50px);
         opacity: 0;
     }
     to {
