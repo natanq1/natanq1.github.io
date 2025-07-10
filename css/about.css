@@ -500,22 +500,24 @@
 }
 
 .modal-text {
-    font-size: 1.15rem;
-    line-height: 1.8;
+    font-size: 1.1rem;
+    line-height: 1.7;
     color: #333;
 }
 
 .modal-text p {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem;
     text-align: justify;
     font-weight: 400;
+    font-size: 1.1rem;
+    line-height: 1.7;
 }
 
 .modal-text p:first-child {
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: #2c3e50;
-    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: #333;
+    margin-bottom: 1.2rem;
 }
 
 .modal-text p:last-child {
@@ -673,6 +675,132 @@
     transform: translateX(3px);
 }
 
+/* Slideshow Styles */
+.slideshow-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.slideshow-wrapper {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.slide-image-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.slide-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+.slide-image-container .image-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border: 2px dashed #dee2e6;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.slide-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 0.6rem;
+    cursor: pointer;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+    opacity: 0.8;
+}
+
+.slide-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: translateY(-50%) scale(1.05);
+    opacity: 1;
+}
+
+.prev-slide {
+    left: 10px;
+}
+
+.next-slide {
+    right: 10px;
+}
+
+.slide-indicators {
+    display: flex;
+    gap: 0.4rem;
+    margin: 0.8rem 0;
+    justify-content: center;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: none;
+    background: #dee2e6;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.indicator.active {
+    background: #667eea;
+    transform: scale(1.1);
+}
+
+.indicator:hover {
+    background: #667eea;
+    opacity: 0.7;
+}
+
+.slide-caption {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6c757d;
+    font-style: italic;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+    max-width: 100%;
+}
+
+.slide-counter {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #999;
+    font-weight: 500;
+}
+
 @media (max-width: 1024px) {
     .about-layout {
         grid-template-columns: 1fr;
@@ -758,12 +886,15 @@
     }
     
     .modal-text {
-        font-size: 1.1rem;
-        line-height: 1.7;
+        font-size: 1rem;
+        line-height: 1.6;
     }
     
+    .modal-text p,
     .modal-text p:first-child {
-        font-size: 1.15rem;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
     }
     
     .modal-image .image-placeholder,
@@ -799,6 +930,35 @@
     .next-btn:hover .nav-arrow {
         transform: none;
     }
+    
+    .slideshow-wrapper {
+        height: 280px;
+    }
+    
+    .slide-btn {
+        padding: 0.5rem;
+        font-size: 1rem;
+        width: 32px;
+        height: 32px;
+    }
+    
+    .prev-slide {
+        left: 8px;
+    }
+    
+    .next-slide {
+        right: 8px;
+    }
+    
+    .indicator {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .slide-caption {
+        font-size: 0.85rem;
+        padding: 0 1rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -818,16 +978,42 @@
     }
     
     .modal-text {
-        font-size: 1rem;
+        font-size: 0.95rem;
         line-height: 1.6;
     }
     
+    .modal-text p,
     .modal-text p:first-child {
-        font-size: 1.1rem;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
     }
     
     .modal-image .image-placeholder,
     .modal-image img {
         height: 250px;
+    }
+    
+    .slideshow-wrapper {
+        height: 250px;
+    }
+    
+    .slide-btn {
+        padding: 0.4rem;
+        font-size: 0.9rem;
+        width: 28px;
+        height: 28px;
+    }
+    
+    .prev-slide {
+        left: 6px;
+    }
+    
+    .next-slide {
+        right: 6px;
+    }
+    
+    .slide-caption {
+        font-size: 0.8rem;
     }
 }
